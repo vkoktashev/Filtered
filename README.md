@@ -1,3 +1,5 @@
+Приложение доступно по [ссылке](https://laughing-feynman-47e227.netlify.app/)
+
 Проект создан с помощью [Create React App](https://github.com/facebook/create-react-app).
 
 В корневой директории модно выполнить следующие команды:
