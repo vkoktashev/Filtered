@@ -1,19 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./styles/css/main.css";
-import MainPage from "./components/MainPage/MainPage";
+import { BrowserRouter, Route } from "react-router-dom";
+import { QueryParamProvider } from "use-query-params";
+import MainPageContainer from "./components/MainPage/MainPageContainer";
 
-import { createStore, applyMiddleware, compose } from "redux";
 import { Provider } from "react-redux";
-import thunk from "redux-thunk";
-import reducer from "./store/reducer";
-
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
+import { store } from "./store/store";
 
 ReactDOM.render(
 	<Provider store={store}>
-		<MainPage />
+		<BrowserRouter>
+			<QueryParamProvider ReactRouterRoute={Route}>
+				<MainPageContainer />
+			</QueryParamProvider>
+		</BrowserRouter>
 	</Provider>,
 	document.getElementById("root")
 );

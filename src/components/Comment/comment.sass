@@ -1,11 +1,13 @@
+@import '../../styles/variables'
+
 .comment
-    background-color: white
+    background-color: $bg-color-main
     border-radius: $border-radius
 
     &__body
         display: flex
         flex-direction: column
-        padding: 1rem
+        padding: 15px
 
     &__header
         font-weight: bold
@@ -14,7 +16,7 @@
         margin: 0
     
     &__email
-        color: #959595
+        color: $font-color-secondary
         font-size: 14px
         line-height: 16px
         margin: 0
@@ -23,3 +25,4 @@
     &__text
         font-size: 16px
         line-height: 19px
+        margin-bottom: 0

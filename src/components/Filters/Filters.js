@@ -1,12 +1,9 @@
 import React from "react";
+import PropTypes from "prop-types";
+import classNames from "classnames";
+import "./filters.sass";
 
-function Filters({
-	domains,
-	searchFilter,
-	setSearchFilter,
-	domainFilter,
-	setDomainFilter,
-}) {
+function Filters({ domains, filters }) {
 	return (
 		<div className='filters'>
 			<div className='filters__body'>
@@ -15,21 +12,22 @@ function Filters({
 					type='text'
 					placeholder='Enter Name'
 					className='filters__search-input'
-					value={searchFilter}
-					onChange={(event) => setSearchFilter(event.target.value)}
+					value={filters.searchFilter}
+					onChange={(event) => filters.setSearchFilter(event.target.value)}
 				/>
 				<div className='filters__domains-list'>
 					<div className='filters__label'>Show only</div>
 					{domains.map((domain) => (
 						<button
 							onClick={() => {
-								domainFilter === domain
-									? setDomainFilter("")
-									: setDomainFilter(domain);
+								filters.domainFilter === domain
+									? filters.setDomainFilter("")
+									: filters.setDomainFilter(domain);
 							}}
-							className={`filters__domain ${
-								domainFilter === domain ? "filters__domain_active" : ""
-							}`}
+							className={classNames("filters__domain", {
+								filters__domain_active: filters.domainFilter === domain,
+							})}
+							key={domain}
 						>
 							{domain}
 						</button>
@@ -39,5 +37,15 @@ function Filters({
 		</div>
 	);
 }
+
+Filters.propTypes = {
+	domains: PropTypes.arrayOf(PropTypes.string),
+	filters: PropTypes.shape({
+		searchFilter: PropTypes.string,
+		setSearchFilter: PropTypes.func,
+		domainFilter: PropTypes.string,
+		setDomainFilter: PropTypes.func,
+	}),
+};
 
 export default Filters;

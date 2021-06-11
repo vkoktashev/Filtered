@@ -1,65 +1,28 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { connect } from "react-redux";
-import * as actions from "../../store/actions";
-import * as selectors from "../../store/reducer";
-
+import React from "react";
+import PropTypes from "prop-types";
 import Comments from "../Comments/Comments";
 import Filters from "../Filters/Filters";
+import "./main-page.sass";
 
-function MainPage({ comments, requestComments }) {
-	const [filteredComments, setFilteredComments] = useState([]);
-	const [domainFilter, setDomainFilter] = useState("");
-	const [searchFilter, setSearchFilter] = useState("");
-	const domains = useMemo(() => getDomains(comments), [comments]);
-
-	useEffect(() => {
-		requestComments();
-	}, [requestComments]);
-
-	useEffect(() => {
-		setFilteredComments(
-			comments?.filter(
-				(comment) =>
-					comment?.email?.endsWith(domainFilter) &&
-					comment?.name?.includes(searchFilter)
-			)
-		);
-	}, [domainFilter, searchFilter, comments]);
-
-	function getDomains(comments) {
-		let domains = [];
-		for (let comment in comments) {
-			let domain = "." + comments[comment]?.email?.split(".").pop();
-			if (domains.indexOf(domain) === -1) domains.push(domain);
-		}
-		return domains;
-	}
-
+function MainPage({ comments, domains, filters }) {
 	return (
 		<div className='filtered'>
 			<header className='header'>Filtered List</header>
-			<Filters
-				domains={domains}
-				searchFilter={searchFilter}
-				setSearchFilter={setSearchFilter}
-				domainFilter={domainFilter}
-				setDomainFilter={setDomainFilter}
-			/>
-			<Comments comments={filteredComments} />
+			<Filters domains={domains} filters={filters} />
+			<Comments comments={comments} />
 		</div>
 	);
 }
 
-const mapStateToProps = (state) => ({
-	comments: selectors.getComments(state),
-});
-
-const mapDispatchToProps = (dispatch) => {
-	return {
-		requestComments: () => {
-			dispatch(actions.requestComments());
-		},
-	};
+Filters.propTypes = {
+	comments: PropTypes.arrayOf(PropTypes.object),
+	domains: PropTypes.arrayOf(PropTypes.string),
+	filters: PropTypes.shape({
+		searchFilter: PropTypes.string,
+		setSearchFilter: PropTypes.func,
+		domainFilter: PropTypes.string,
+		setDomainFilter: PropTypes.func,
+	}),
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainPage);
+export default MainPage;
